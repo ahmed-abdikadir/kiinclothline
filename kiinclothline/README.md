@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kiin Clothline
 
-## Getting Started
+Website for **Kiin Clothline**, a bespoke suit tailor in Eastleigh, Nairobi, Kenya. Built with Next.js (App Router).
 
-First, run the development server:
+## Features
+
+- Information sections: hero, about, services, how it works, visit us (map, hours, phone/WhatsApp, Instagram)
+- **Collection**: a gallery of tailored suits, filterable by category, with a lightbox
+- **Booking form**: customer details, suit type, occasion, preferred fitting date/time, optional measurements and notes
+  - Requests are saved by `POST /api/bookings`
+  - After submitting, the customer can also send the booking to the shop on WhatsApp with one tap (the message is pre-filled)
+- **Admin page** (`/admin`): view booking requests (protected by `ADMIN_KEY`)
+
+## Run locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Env variable | Default      | Purpose                                         |
+|--------------|--------------|-------------------------------------------------|
+| `ADMIN_KEY`  | `kiin-admin` | Key for `/admin`. **Change this in production.** |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Bookings are stored in `data/bookings.json`, which git ignores. Serverless hosts like Vercel have a read-only filesystem, so to deploy there, swap that file for a database. Until then, the WhatsApp button still delivers each booking to the shop.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Editing content
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Shop details** (phone, WhatsApp, Instagram, map): `app/lib/site.ts`
+- **Suits gallery**: the `suits` list in `app/lib/site.ts`. The images are web-optimised copies in `public/suits/`. The originals stay in `public/Images/`.
+- **Booking options** (suit types, time slots): `app/lib/booking.ts`
