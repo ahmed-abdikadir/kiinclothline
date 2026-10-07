@@ -1,12 +1,12 @@
 export const site = {
   name: "Kiin Clothline",
-  location: "Eastleigh, Nairobi, Kenya",
+  location: "Eastleigh,Astom College  Nairobi, Kenya",
   phone: "+254790132055",
   phoneDisplay: "+254 790 132 055",
   whatsapp: "254790132055",
   instagram: "https://www.instagram.com/kiin_clothline/",
   instagramHandle: "@kiin_clothline",
-  mapEmbed: "https://www.google.com/maps?q=Eastleigh,+Nairobi,+Kenya&output=embed",
+  mapEmbed: "https://www.google.com/maps?q=Eastleigh Astom College,+Nairobi,+Kenya&output=embed",
 };
 
 export type Suit = {

@@ -130,7 +130,7 @@ export default function Home() {
               <h2>Find us in Eastleigh</h2>
               <ul className="contact">
                 <li><strong>Address</strong><span>{site.location}</span></li>
-                <li><strong>Hours</strong><span>Mon – Sat: 9:00am – 7:00pm<br />Sunday: By appointment</span></li>
+                <li><strong>Hours</strong><span>Mon – Sun: 9:00am – 9:00pm<br />Walk ins also allowed</span></li>
                 <li><strong>Phone / WhatsApp</strong><span><a href={`tel:${site.phone}`}>{site.phoneDisplay}</a></span></li>
                 <li><strong>Instagram</strong><span><a href={site.instagram} target="_blank" rel="noopener noreferrer">{site.instagramHandle}</a></span></li>
               </ul>
