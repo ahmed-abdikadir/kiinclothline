@@ -27,7 +27,7 @@ export default function Gallery({ suits }: { suits: Suit[] }) {
       </div>
       <div className="gallery">
         {shown.map((s) => (
-          <button key={s.image} type="button" className="suit" onClick={() => setActive(s)}>
+          <button key={`${s.category}-${s.title}`} type="button" className="suit" onClick={() => setActive(s)}>
             <div className="suit__img">
               <Image src={s.image} alt={s.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 25vw" />
             </div>
@@ -48,6 +48,21 @@ export default function Gallery({ suits }: { suits: Suit[] }) {
           <p className="lightbox__caption">
             <strong>{active.title}</strong>: {active.description}
           </p>
+          <div className="lightbox__actions">
+            <a
+              className="btn"
+              href="#booking"
+              onClick={(event) => {
+                event.stopPropagation();
+                window.dispatchEvent(new CustomEvent("kiin:suit-selected", {
+                  detail: { title: active.title, category: active.category },
+                }));
+                setActive(null);
+              }}
+            >
+              Ask about this style
+            </a>
+          </div>
         </div>
       )}
     </>

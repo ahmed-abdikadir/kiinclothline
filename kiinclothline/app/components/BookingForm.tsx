@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { MEASUREMENTS, SUIT_TYPES, TIMES, validateBooking } from "@/app/lib/booking";
 import { site } from "@/app/lib/site";
 
@@ -23,6 +23,19 @@ function whatsappLink(d: Record<string, string>) {
 export default function BookingForm() {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [invalid, setInvalid] = useState<string[]>([]);
+  const [suitType, setSuitType] = useState("");
+  const [notes, setNotes] = useState("");
+
+  useEffect(() => {
+    const onStyleSelected = (event: Event) => {
+      const { title, category } = (event as CustomEvent<{ title: string; category: string }>).detail;
+      setSuitType(category);
+      setNotes(`Interested in: ${title}`);
+    };
+
+    window.addEventListener("kiin:suit-selected", onStyleSelected);
+    return () => window.removeEventListener("kiin:suit-selected", onStyleSelected);
+  }, []);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -46,6 +59,8 @@ export default function BookingForm() {
       const body = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(body.error || "Something went wrong.");
       form.reset();
+      setSuitType("");
+      setNotes("");
       setStatus({
         kind: "ok",
         message: `Thank you, ${data.name}! We have received your booking request for ${data.date} at ${data.time}. We will contact you on ${data.phone} to confirm.`,
@@ -77,7 +92,7 @@ export default function BookingForm() {
         <legend>Your suit</legend>
         <div className="form__row">
           <label>Suit type*
-            <select name="suitType" defaultValue="" className={cls("suitType")}>
+            <select name="suitType" value={suitType} onChange={(e) => setSuitType(e.target.value)} className={cls("suitType")}>
               <option value="">Select…</option>
               {SUIT_TYPES.map((t) => <option key={t}>{t}</option>)}
             </select>
@@ -104,7 +119,7 @@ export default function BookingForm() {
         </div>
       </fieldset>
 
-      <label>Notes / style preferences<textarea name="notes" rows={3} placeholder="Fabric, colour, lapel style, budget…" /></label>
+      <label>Notes / style preferences<textarea name="notes" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Fabric, colour, lapel style, budget…" /></label>
 
       <button type="submit" className="btn btn--full" disabled={status.kind === "sending"}>Request Booking</button>
       <div className={`form__status ${status.kind}`} role="status" aria-live="polite">
