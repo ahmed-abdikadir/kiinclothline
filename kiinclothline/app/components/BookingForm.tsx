@@ -25,8 +25,12 @@ export default function BookingForm() {
   const [invalid, setInvalid] = useState<string[]>([]);
   const [suitType, setSuitType] = useState("");
   const [notes, setNotes] = useState("");
+  const [minDate, setMinDate] = useState("");
 
   useEffect(() => {
+    const today = new Date();
+    setMinDate(`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`);
+
     const onStyleSelected = (event: Event) => {
       const { title, category } = (event as CustomEvent<{ title: string; category: string }>).detail;
       setSuitType(category);
@@ -76,14 +80,15 @@ export default function BookingForm() {
   }
 
   const cls = (name: string) => (invalid.includes(name) ? "invalid" : undefined);
+  const fieldError = (name: string) => invalid.includes(name) ? <span className="field-error">Please complete this field.</span> : null;
 
   return (
     <form className="form" onSubmit={onSubmit} noValidate>
       <fieldset>
         <legend>Your details</legend>
         <div className="form__row">
-          <label>Full name*<input name="name" autoComplete="name" className={cls("name")} /></label>
-          <label>Phone number*<input name="phone" type="tel" placeholder="07XX XXX XXX" autoComplete="tel" className={cls("phone")} /></label>
+          <label>Full name*<input name="name" autoComplete="name" className={cls("name")} aria-invalid={invalid.includes("name")} />{fieldError("name")}</label>
+          <label>Phone number*<input name="phone" type="tel" placeholder="07XX XXX XXX" autoComplete="tel" className={cls("phone")} aria-invalid={invalid.includes("phone")} />{fieldError("phone")}</label>
         </div>
         <label>Email<input name="email" type="email" autoComplete="email" /></label>
       </fieldset>
@@ -95,29 +100,32 @@ export default function BookingForm() {
             <select name="suitType" value={suitType} onChange={(e) => setSuitType(e.target.value)} className={cls("suitType")}>
               <option value="">Select…</option>
               {SUIT_TYPES.map((t) => <option key={t}>{t}</option>)}
-            </select>
+            </select>{fieldError("suitType")}
           </label>
           <label>Occasion<input name="occasion" placeholder="e.g. Wedding, office, graduation" /></label>
         </div>
         <div className="form__row">
-          <label>Preferred fitting date*<input name="date" type="date" className={cls("date")} onFocus={(e) => (e.currentTarget.min = new Date().toISOString().slice(0, 10))} /></label>
+          <label>Preferred fitting date*<input name="date" type="date" min={minDate} className={cls("date")} aria-invalid={invalid.includes("date")} />{fieldError("date")}</label>
           <label>Preferred time*
             <select name="time" defaultValue="" className={cls("time")}>
               <option value="">Select…</option>
               {TIMES.map((t) => <option key={t}>{t}</option>)}
-            </select>
+            </select>{fieldError("time")}
           </label>
         </div>
       </fieldset>
 
-      <fieldset>
-        <legend>Measurements (optional, cm)</legend>
-        <div className="form__row form__row--3">
-          {MEASUREMENTS.map((m) => (
-            <label key={m} className="capitalize">{m}<input name={m} type="number" min="0" step="0.5" /></label>
-          ))}
-        </div>
-      </fieldset>
+      <details className="measurements">
+        <summary>Add measurements <span>(optional)</span></summary>
+        <fieldset>
+          <legend>Measurements in cm</legend>
+          <div className="form__row form__row--3">
+            {MEASUREMENTS.map((m) => (
+              <label key={m} className="capitalize">{m}<input name={m} type="number" min="0" step="0.5" /></label>
+            ))}
+          </div>
+        </fieldset>
+      </details>
 
       <label>Notes / style preferences<textarea name="notes" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Fabric, colour, lapel style, budget…" /></label>
 
