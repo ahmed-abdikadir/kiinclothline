@@ -2,17 +2,17 @@ import Image from "next/image";
 import Nav from "@/app/components/Nav";
 import Gallery from "@/app/components/Gallery";
 import BookingForm from "@/app/components/BookingForm";
+import Testimonials from "@/app/components/Testimonials";
 import { site, suits } from "@/app/lib/site";
 
 const services = [
-  { title: "Wedding Suits", text: "Suits for grooms and groomsmen, with coordinated colours for the whole party." },
-  { title: "Business Suits", text: "Two-piece, three-piece and double-breasted suits, cut sharp and comfortable enough to wear every day." },
-  { title: "Tuxedos & Evening Wear", text: "Dinner jackets and formal wear for galas, dinners and black-tie events." },
-  { title: "Alterations", text: "Refitting and adjustments so the suits you already own fit you properly again." },
+  { title: "Bespoke Fit", text: "Made around your measurements, posture and the way you move." },
+  { title: "Considered Cloth", text: "A considered selection of fabrics, colours and finishes for every occasion." },
+  { title: "Personal Styling", text: "A thoughtful fitting experience, from the first conversation to the final detail." },
 ];
 
 const steps = [
-  { title: "Book", text: "Fill in the booking form below with your details and the suit you want." },
+  { title: "Book", text: "Tell us what you have in mind and choose a preferred fitting time." },
   { title: "Consult & Measure", text: "Visit our Eastleigh shop, choose your fabric and get fully measured." },
   { title: "Fitting", text: "Try the suit on while it is being made so we can get every detail right." },
   { title: "Collect", text: "Pick up your finished suit, pressed and ready to wear." },
@@ -27,13 +27,13 @@ export default function Home() {
           <div className="container hero__grid">
             <div className="hero__content">
               <p className="eyebrow">Bespoke Tailoring &middot; Eastleigh, Nairobi</p>
-              <h1>Suits cut for you,<br />and nobody else.</h1>
+              <h1>Tailored for<br />your presence.</h1>
               <p className="hero__lead">
-                Kiin Clothline makes every suit by hand, from the first measurement to the last stitch, to fit your body, your style and your occasion.
+                Exceptional tailoring, made personal in Eastleigh, Nairobi.
               </p>
               <div className="hero__actions">
                 <a href="#booking" className="btn">Book a Fitting</a>
-                <a href="#collection" className="btn btn--ghost">View Our Suits</a>
+                <a href="#collection" className="btn btn--ghost">Explore Collection <span aria-hidden="true">↗</span></a>
               </div>
             </div>
             <div className="hero__images">
@@ -82,15 +82,26 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="section services">
+        <section className="section testimonials" id="testimonials">
           <div className="container">
             <div className="section__head">
-              <p className="eyebrow">What We Make</p>
-              <h2>Our services</h2>
+              <p className="eyebrow">Worn by You</p>
+              <h2>Stories in every stitch.</h2>
+              <p>Notes from the people who wear Kiin.</p>
+            </div>
+            <Testimonials />
+          </div>
+        </section>
+
+        <section className="section services" id="services">
+          <div className="container">
+            <div className="section__head">
+              <p className="eyebrow">The Kiin Difference</p>
+              <h2>Why Kiin</h2>
             </div>
             <div className="cards">
-              {services.map((s) => (
-                <article key={s.title} className="card"><h3>{s.title}</h3><p>{s.text}</p></article>
+              {services.map((s, i) => (
+                <article key={s.title} className="card"><span className="card__number">0{i + 1}</span><h3>{s.title}</h3><p>{s.text}</p></article>
               ))}
             </div>
           </div>
@@ -114,9 +125,9 @@ export default function Home() {
           <div className="container booking__grid">
             <div className="booking__intro">
               <p className="eyebrow">Book a Fitting</p>
-              <h2>Reserve your appointment</h2>
-              <p>Tell us about yourself and the suit you want. We will call or WhatsApp you to confirm your fitting time.</p>
-              <p className="muted">Measurements are optional. If you don&apos;t have them, leave them blank and we will measure you in the shop.</p>
+              <h2>Begin with a conversation.</h2>
+              <p>Tell us a little about what you are looking for. We will be in touch to find a fitting time that works for you.</p>
+              <p className="muted">Your fitting and measurements take place at our Eastleigh studio.</p>
               <div className="booking__img"><Image src="/suits/brown-check-blazer.jpg" alt="Brown check blazer on a Kiin Clothline mannequin" fill sizes="(max-width: 900px) 0px, 30vw" /></div>
             </div>
             <BookingForm />
@@ -158,6 +169,7 @@ export default function Home() {
           <p>&copy; {site.name} &middot; Bespoke Tailoring &middot; {site.location}</p>
         </div>
       </footer>
+      <a className="mobile-booking-cta" href="#booking">Book a fitting <span aria-hidden="true">→</span></a>
     </>
   );
 }

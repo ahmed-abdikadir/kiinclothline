@@ -1,4 +1,4 @@
-export const SUIT_TYPES = ["Two-piece suit", "Three-piece suit", "Double-breasted suit", "Wedding suit", "Tuxedo", "Blazer / Sport coat", "Wedding Suits", "Evening Suits", "Business Suits", "Tailored Pants", "Linen", "Smart Casual", "Blazers", "Premium Luxury Wool Suits", "Alterations"];
+export const SUIT_TYPES = ["Two-piece suit", "Three-piece suit", "Double-breasted suit", "Wedding suit", "Tuxedo", "Blazer / Sport coat", "Wedding Suits", "Evening Suits", "Business Suits", "Tailored Pants", "Linen", "Casual", "Premium Luxury Wool Suits", "Alterations"];
 export const TIMES = ["09:00", "10:00", "11:00", "12:00", "14:00", "15:00", "16:00", "17:00"];
 export const MEASUREMENTS = ["chest", "waist", "shoulder", "sleeve", "inseam", "height"] as const;
 export const REQUIRED = ["name", "phone", "suitType", "date", "time"] as const;

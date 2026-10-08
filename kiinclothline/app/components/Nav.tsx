@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 
 const links = [
-  { href: "#about", label: "About" },
   { href: "#collection", label: "Collection" },
-  { href: "#process", label: "Process" },
-  { href: "#visit", label: "Visit Us" },
+  { href: "#about", label: "About" },
+  { href: "#services", label: "Services" },
+  { href: "#testimonials", label: "Testimonials" },
 ];
 
 export default function Nav() {
@@ -25,10 +25,10 @@ export default function Nav() {
     <header className="nav">
       <div className="container nav__inner">
         <a href="#top" className="logo">KIIN <span>Clothline</span></a>
-        <button className="nav__toggle" aria-label="Toggle menu" aria-expanded={open} onClick={() => setOpen(!open)}>
-          <span /><span /><span />
+        <button className="nav__toggle" aria-controls="primary-navigation" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
+          <span /><span />
         </button>
-        <nav className={`nav__links${open ? " open" : ""}`} onClick={() => setOpen(false)}>
+        <nav id="primary-navigation" className={`nav__links${open ? " open" : ""}`} onClick={() => setOpen(false)}>
           {links.map((l) => (
             <a key={l.href} href={l.href} className={current === l.href ? "current" : undefined} aria-current={current === l.href ? "location" : undefined}>{l.label}</a>
           ))}

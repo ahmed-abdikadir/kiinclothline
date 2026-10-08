@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { MEASUREMENTS, SUIT_TYPES, TIMES, validateBooking } from "@/app/lib/booking";
 import { site } from "@/app/lib/site";
 
@@ -21,6 +21,7 @@ function whatsappLink(d: Record<string, string>) {
 }
 
 export default function BookingForm() {
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [invalid, setInvalid] = useState<string[]>([]);
   const [suitType, setSuitType] = useState("");
@@ -39,6 +40,20 @@ export default function BookingForm() {
 
     window.addEventListener("kiin:suit-selected", onStyleSelected);
     return () => window.removeEventListener("kiin:suit-selected", onStyleSelected);
+  }, []);
+
+  useEffect(() => {
+    const openFromBookingLink = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const link = target.closest<HTMLAnchorElement>('a[href="#booking"]');
+      if (!link) return;
+      event.preventDefault();
+      if (!dialogRef.current?.open) dialogRef.current?.showModal();
+    };
+
+    document.addEventListener("click", openFromBookingLink);
+    return () => document.removeEventListener("click", openFromBookingLink);
   }, []);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -83,6 +98,18 @@ export default function BookingForm() {
   const fieldError = (name: string) => invalid.includes(name) ? <span className="field-error">Please complete this field.</span> : null;
 
   return (
+    <>
+    <button className="booking-card" type="button" onClick={() => dialogRef.current?.showModal()} aria-haspopup="dialog">
+      <span className="booking-card__label">A considered fit begins here</span>
+      <span className="booking-card__title">Book your fitting</span>
+      <span className="booking-card__copy">Share a few details and our team will help you take the next step.</span>
+      <span className="booking-card__link">Book a fitting <span aria-hidden="true">→</span></span>
+    </button>
+    <dialog className="booking-dialog" ref={dialogRef} aria-labelledby="booking-dialog-title">
+      <button className="booking-dialog__close" type="button" aria-label="Close booking form" onClick={() => dialogRef.current?.close()}>×</button>
+      <p className="eyebrow">Kiin Clothline · Eastleigh</p>
+      <h2 id="booking-dialog-title">Book your fitting</h2>
+      <p className="booking-dialog__intro">Tell us a little about what you have in mind.</p>
     <form className="form" onSubmit={onSubmit} noValidate>
       <fieldset>
         <legend>Your details</legend>
@@ -129,7 +156,7 @@ export default function BookingForm() {
 
       <label>Notes / style preferences<textarea name="notes" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Fabric, colour, lapel style, budget…" /></label>
 
-      <button type="submit" className="btn btn--full" disabled={status.kind === "sending"}>Request Booking</button>
+      <button type="submit" className="btn btn--full" disabled={status.kind === "sending"}>Request a fitting</button>
       <div className={`form__status ${status.kind}`} role="status" aria-live="polite">
         {status.message}
         {status.whatsapp && (
@@ -139,5 +166,7 @@ export default function BookingForm() {
         )}
       </div>
     </form>
+    </dialog>
+    </>
   );
 }
