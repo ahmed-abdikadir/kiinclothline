@@ -20,9 +20,16 @@ npm run dev      # http://localhost:3000
 
 | Env variable | Default      | Purpose                                         |
 |--------------|--------------|-------------------------------------------------|
-| `ADMIN_KEY`  | `kiin-admin` | Key for `/admin`. **Change this in production.** |
+| `MYSQL_HOST` | `127.0.0.1` | MySQL server host |
+| `MYSQL_PORT` | `3306` | MySQL server port |
+| `MYSQL_USER` | — | MySQL username |
+| `MYSQL_PASSWORD` | — | MySQL password |
+| `MYSQL_DATABASE` | `KCS` | Database name |
+| `ADMIN_KEY` | — | Key for `/admin`; set a long random value |
 
-Bookings are stored in `data/bookings.json`, which git ignores. Serverless hosts like Vercel have a read-only filesystem, so to deploy there, swap that file for a database. Until then, the WhatsApp button still delivers each booking to the shop.
+Booking and review records are stored in MySQL. The API creates the `bookings` and `reviews` tables on first use. Each Kenyan phone number can have one booking; `07…` and `+254…` formats are treated as the same number. Copy `.env.example` to `.env.local` and set the database credentials before running the app. The supplied local configuration is kept in the ignored `.env.local` file.
+
+Review image files are saved under `public/reviews`; use persistent/object storage for those files when deploying to an environment with an ephemeral filesystem. For production, configure `MYSQL_*` variables to point to a database reachable from the deployed app; `localhost` only works when MySQL runs on the same machine.
 
 ## Editing content
 

@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import { promises as fs } from "fs";
 import path from "path";
+import { getDatabase, type DbRow } from "@/app/lib/db";
 
 export type Review = {
   id: string;
@@ -11,18 +12,8 @@ export type Review = {
   createdAt: string;
 };
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const FILE = path.join(DATA_DIR, "reviews.json");
 const REVIEW_IMAGES = path.join(process.cwd(), "public", "reviews");
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
-
-async function readAll(): Promise<Review[]> {
-  try {
-    return JSON.parse(await fs.readFile(FILE, "utf8")) as Review[];
-  } catch {
-    return [];
-  }
-}
 
 function imageExtension(bytes: Buffer) {
   if (bytes.subarray(0, 3).equals(Buffer.from([0xff, 0xd8, 0xff]))) return "jpg";
@@ -32,7 +23,16 @@ function imageExtension(bytes: Buffer) {
 }
 
 export async function GET() {
-  return Response.json((await readAll()).reverse());
+  try {
+    const db = await getDatabase();
+    const [rows] = await db.query<(DbRow & Omit<Review, "createdAt"> & { created_at: Date })[]>(
+      "SELECT id, name, rating, note, image, created_at FROM reviews ORDER BY created_at DESC",
+    );
+    return Response.json(rows.map(({ created_at, ...review }) => ({ ...review, createdAt: new Date(created_at).toISOString() })));
+  } catch (cause) {
+    console.error("Review database read failed:", cause);
+    return Response.json({ error: "Could not load reviews." }, { status: 503 });
+  }
 }
 
 export async function POST(request: Request) {
@@ -74,9 +74,15 @@ export async function POST(request: Request) {
   }
 
   const review: Review = { id, name, rating, note, image: imagePath, createdAt: new Date().toISOString() };
-  await fs.mkdir(DATA_DIR, { recursive: true });
-  const all = await readAll();
-  all.push(review);
-  await fs.writeFile(FILE, JSON.stringify(all, null, 2));
-  return Response.json({ ok: true, review }, { status: 201 });
+  try {
+    const db = await getDatabase();
+    await db.execute(
+      "INSERT INTO reviews (id, name, rating, note, image) VALUES (?, ?, ?, ?, ?)",
+      [review.id, review.name, review.rating, review.note, review.image ?? null],
+    );
+    return Response.json({ ok: true, review }, { status: 201 });
+  } catch (cause) {
+    console.error("Review database write failed:", cause);
+    return Response.json({ error: "We could not save your review. Please try again." }, { status: 503 });
+  }
 }

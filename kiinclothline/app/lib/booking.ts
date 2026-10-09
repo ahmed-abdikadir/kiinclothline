@@ -8,6 +8,11 @@ export type Booking = Record<(typeof FIELDS)[number], string> & { id: string; cr
 
 export const isKenyanPhone = (v: string) => /^(\+?254|0)[17]\d{8}$/.test(v.replace(/[\s-]/g, ""));
 
+export function normalizeKenyanPhone(value: string) {
+  const digits = value.replace(/\D/g, "");
+  return digits.startsWith("254") ? digits : `254${digits.slice(1)}`;
+}
+
 export function validateBooking(input: Record<string, unknown>): string | null {
   const missing = REQUIRED.filter((f) => !String(input[f] ?? "").trim());
   if (missing.length) return "Please fill in all required fields.";
