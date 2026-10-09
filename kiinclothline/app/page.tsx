@@ -144,10 +144,12 @@ export default function Home() {
                 <li><strong>Hours</strong><span>Mon – Sun: 9:00am – 9:00pm<br />Walk ins also allowed</span></li>
                 <li><strong>Phone / WhatsApp</strong><span><a href={`tel:${site.phone}`}>{site.phoneDisplay}</a></span></li>
                 <li><strong>Instagram</strong><span><a href={site.instagram} target="_blank" rel="noopener noreferrer">{site.instagramHandle}</a></span></li>
+                <li><strong>TikTok</strong><span><a href={site.tiktok} target="_blank" rel="noopener noreferrer">{site.tiktokHandle}</a></span></li>
               </ul>
               <div className="visit__actions">
                 <a className="btn" href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>
                 <a className="btn btn--ghost" href={site.instagram} target="_blank" rel="noopener noreferrer">Follow on Instagram</a>
+                <a className="btn btn--ghost" href={site.tiktok} target="_blank" rel="noopener noreferrer">Follow on TikTok</a>
               </div>
             </div>
             <div className="map">
@@ -166,6 +168,7 @@ export default function Home() {
             </svg>
             {site.instagramHandle}
           </a>
+          <a className="footer__ig" href={site.tiktok} target="_blank" rel="noopener noreferrer">TikTok {site.tiktokHandle}</a>
           <p>&copy; {site.name} &middot; Bespoke Tailoring &middot; {site.location}</p>
         </div>
       </footer>

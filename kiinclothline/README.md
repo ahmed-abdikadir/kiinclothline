@@ -4,7 +4,7 @@ Website for **Kiin Clothline**, a bespoke suit tailor in Eastleigh, Nairobi, Ken
 
 ## Features
 
-- Information sections: hero, about, services, how it works, visit us (map, hours, phone/WhatsApp, Instagram)
+- Information sections: hero, about, services, how it works, visit us (map, hours, phone/WhatsApp, Instagram, TikTok)
 - **Collection**: a gallery of tailored suits, filterable by category, with a lightbox
 - **Booking form**: customer details, suit type, occasion, preferred fitting date/time, optional measurements and notes
   - Requests are saved by `POST /api/bookings`

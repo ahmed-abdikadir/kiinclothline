@@ -6,6 +6,8 @@ export const site = {
   whatsapp: "254790132055",
   instagram: "https://www.instagram.com/kiin_clothline/",
   instagramHandle: "@kiin_clothline",
+  tiktok: "https://www.tiktok.com/@axmedkin",
+  tiktokHandle: "@axmedkin",
   mapEmbed: "https://www.google.com/maps?q=Kiin+Clothline,+Tenth+St,+Nairobi&ftid=0x182f179d8dbabcd3:0xa7fced443ed8893&output=embed",
 };
 
