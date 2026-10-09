@@ -356,7 +356,7 @@ h2 { font-weight: 500; letter-spacing: -.025em; }
 .booking-card__copy { margin-top: .8rem; max-width: 350px; color: var(--muted); font-size: .94rem; }
 .booking-card__link { margin-top: auto; padding-top: 2rem; font-size: .75rem; text-transform: uppercase; letter-spacing: .13em; }
 .booking-card__link span { color: var(--gold-dark); padding-left: .5rem; font-size: 1.1rem; }
-.booking-dialog { position: fixed; width: min(700px, calc(100% - 28px)); max-width: none; max-height: min(90dvh, 900px); padding: clamp(24px, 5vw, 54px); border: 0; background: var(--paper); color: var(--text); overflow: auto; }
+.booking-dialog { position: fixed; inset: 0; width: min(700px, calc(100% - 28px)); height: fit-content; max-width: none; max-height: min(90dvh, 900px); margin: auto; padding: clamp(24px, 5vw, 54px); border: 0; background: var(--paper); color: var(--text); overflow: auto; }
 .booking-dialog[open] { animation: dialog-in .22s ease-out; }
 .booking-dialog::backdrop { background: rgba(18,18,16,.76); backdrop-filter: blur(4px); }
 .booking-dialog h2 { margin: .2rem 0 .4rem; font-size: clamp(2rem, 5vw, 3rem); }
@@ -438,6 +438,31 @@ h2 { font-weight: 500; letter-spacing: -.025em; }
 }
 .mobile-booking-cta { display: none; }
 @media (max-width: 560px) { .mobile-booking-cta { display: flex; } }
+
+/* Mobile readability refinements */
+@media (max-width: 820px) {
+  .hero { align-items: stretch; }
+  .hero__images::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(12, 12, 10, .66), rgba(12, 12, 10, .25)), linear-gradient(0deg, rgba(12, 12, 10, .58), transparent 60%);
+  }
+  .hero__content .eyebrow { color: #e0c79f; }
+  .hero__lead { color: #fff; opacity: 1; text-shadow: 0 1px 10px rgba(0,0,0,.45); }
+  .hero .btn--ghost { color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.45); }
+}
+@media (max-width: 560px) {
+  .hero { min-height: max(780px, 100svh); }
+  .hero__grid { min-height: 100%; }
+  .hero__images { inset: -78px -20px -40px; }
+  .hero h1 { font-size: clamp(2.9rem, 12.5vw, 3.7rem); line-height: .98; }
+  .hero__lead { max-width: 320px; font-size: 1rem; }
+  .about p, .card p, .steps p, .booking__intro > p, .review-form__heading > p:last-child { color: #555249; }
+  .collection .section__head p:last-child, .collection .suit__info p { color: #c6c0b5; }
+}
 
 /* Client testimonials and review submissions */
 .testimonials { background: #f5f2eb; }
